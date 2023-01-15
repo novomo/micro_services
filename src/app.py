@@ -4,7 +4,7 @@ import pandas as pd
 import numpy as np
 
 # load the model
-tipster_bob = load(open('model.pkl', 'rb'))
+tipster_bob = load(open('tipster_bob.pkl', 'rb'))
 # load the scaler
 scaler = load(open('scaler.pkl', 'rb'))
 app = Flask(__name__)
