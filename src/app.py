@@ -2,9 +2,10 @@ from flask import Flask, request, jsonify
 from pickle import load
 import pandas as pd
 import numpy as np
-
+import xgboost as xgb
 # load the model
-tipster_bob = load(open('tipster_bob.pkl', 'rb'))
+tipster_bob = xgb.Booster()
+tipster_bob.load_model("tipster_bob.model")
 # load the scaler
 scaler = load(open('scaler.pkl', 'rb'))
 app = Flask(__name__)
