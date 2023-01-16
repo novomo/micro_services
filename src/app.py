@@ -173,7 +173,7 @@ def formatData(row):
 
     X_all = scaler.fit_transform(np.asarray(X_all))
 
-    return np.asarray(X_all)
+    return xgb.DMatrix(X_all)
 
 
 @app.route('/prediction', methods=('POST',))
