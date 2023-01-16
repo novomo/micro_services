@@ -180,6 +180,7 @@ def formatData(row):
 def prediction():
     content = request.json
     formatted_data = formatData(content['row'])
+    print(formatted_data)
     prediction = tipster_bob.predict(formatted_data)
     print(prediction)
     return jsonify({"prediction": prediction})
