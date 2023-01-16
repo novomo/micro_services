@@ -13,7 +13,7 @@ app = Flask(__name__)
 
 def formatData(row):
 
-    headers = ['tipDate', 'tipster', 'result',
+    headers = ['tipDate', 'tipster',
                'live', 'units', 'odds',
                'allCatTotalROI',
                'allCatTotalWinRate', 'allCatTotalNumOfTips',
@@ -58,11 +58,10 @@ def formatData(row):
     newlist = sorted([row], key=lambda d: d['tipDate'])
     i = 0
     for tip in newlist:
-        # tipDate, tipsterId, result, live, units, odds, allCat, marketCat, homeTeamCat, awayTeamCat, compCat, sportCat
+        # tipDate, tipsterId, live, units, odds, allCat, marketCat, homeTeamCat, awayTeamCat, compCat, sportCat
         rowList = [
             i,
             str(tip['tipster']),
-            tip['result'],
             0 if tip['live'] is False else 1,
             tip['units'],
             tip['odds'],
@@ -170,7 +169,7 @@ def formatData(row):
     # print(formattedData['tipsterId'])
     formattedData = formattedData.replace([np.inf, -np.inf, -0], 0)
 
-    X_all = formattedData.drop(['result', 'tipster'], 1)
+    X_all = formattedData.drop(['tipster'], 1)
 
     X_all = scaler.fit_transform(np.asarray(X_all))
 
