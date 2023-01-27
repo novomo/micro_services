@@ -4,8 +4,8 @@ import pandas as pd
 import numpy as np
 import xgboost as xgb
 # load the model
-tipster_bob = load(open('tipster_bob.pkl', 'rb'))
-
+tipster_bob_1 = load(open('tipster_bob_1.pkl', 'rb'))
+tipster_bob_2 = load(open('tipster_bob_2.pkl', 'rb'))
 # load the scaler
 scaler = load(open('scaler.pkl', 'rb'))
 app = Flask(__name__)
@@ -178,12 +178,14 @@ def formatData(row):
 
 @app.route('/prediction', methods=('POST',))
 def prediction():
-    content = request.json
+    content = request.json()
+    print(content)
     formatted_data = formatData(content['row'])
     print(formatted_data)
-    prediction = tipster_bob.predict(formatted_data)
+    prediction_a = tipster_bob_1.predict(formatted_data)
+    prediction_b = tipster_bob_2.predict(formatted_data)
     print(prediction)
-    return jsonify({"prediction": prediction})
+    return jsonify({"predictions": {"prediction_a": prediction_a, "prediction_b": prediction_b}})
 
 
 app.run('0.0.0.0', debug=True, port=8100)
