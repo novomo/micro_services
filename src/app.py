@@ -3,6 +3,16 @@ from pickle import load
 import pandas as pd
 import numpy as np
 import xgboost as xgb
+# the outcome (dependent variable) has only a limited number of possible values.
+# Logistic Regression is used when response variable is categorical in nature.
+from sklearn.linear_model import LogisticRegression
+# A random forest is a meta estimator that fits a number of decision tree classifiers
+# on various sub-samples of the dataset and use averaging to improve the predictive
+# accuracy and control over-fitting.
+from sklearn.ensemble import RandomForestClassifier
+# a discriminative classifier formally defined by a separating hyperplane.
+from sklearn.svm import SVC
+from sklearn.preprocessing import scale, MaxAbsScaler, MinMaxScaler
 # load the model
 tipster_bob_1 = load(open('tipster_bob_1.pkl', 'rb'))
 tipster_bob_2 = load(open('tipster_bob_2.pkl', 'rb'))
@@ -13,7 +23,7 @@ app = Flask(__name__)
 
 def formatData(row):
 
-    headers = ['tipDate', 'tipster',
+    headers = ['tipDate',
                'live', 'units', 'odds',
                'allCatTotalROI',
                'allCatTotalWinRate', 'allCatTotalNumOfTips',
@@ -61,7 +71,6 @@ def formatData(row):
         # tipDate, tipsterId, live, units, odds, allCat, marketCat, homeTeamCat, awayTeamCat, compCat, sportCat
         rowList = [
             i,
-            str(tip['tipster']),
             0 if tip['live'] is False else 1,
             tip['units'],
             tip['odds'],
@@ -157,23 +166,15 @@ def formatData(row):
 
     # print(formattedData['tipster'])
     # creating a list containing every tipster
-    tipsters = list(set(formattedData['tipster'].values))
-    tipsterToIdx = {t: i for i, t in enumerate(tipsters)}
-    # print(tipsterToIdx)
-    # assigning the tipster their corresponding tipster id
-    tipsterId = [tipsterToIdx[id]
-                 for id in list(formattedData['tipster'].values)]
 
-    # creating a new column for the home tipster id
-    formattedData['tipsterId'] = tipsterId
     # print(formattedData['tipsterId'])
     formattedData = formattedData.replace([np.inf, -np.inf, -0], 0)
 
-    X_all = formattedData.drop(['tipster'], 1)
+    X_all = formattedData.drop(['tipster', 'result'], 1)
 
     X_all = scaler.fit_transform(np.asarray(X_all))
 
-    return xgb.DMatrix(X_all)
+    return X_all
 
 
 @app.route('/prediction', methods=('POST',))
@@ -184,8 +185,8 @@ def prediction():
     print(formatted_data)
     prediction_a = tipster_bob_1.predict(formatted_data)
     prediction_b = tipster_bob_2.predict(formatted_data)
-    print(prediction)
-    return jsonify({"predictions": {"prediction_a": prediction_a, "prediction_b": prediction_b}})
+    print(prediction_a)
+    return jsonify({"predictions": {"prediction_a": prediction_a[0], "prediction_b": prediction_b[0]}})
 
 
 app.run('0.0.0.0', debug=True, port=8100)
