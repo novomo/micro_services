@@ -170,7 +170,7 @@ def formatData(row):
     # print(formattedData['tipsterId'])
     formattedData = formattedData.replace([np.inf, -np.inf, -0], 0)
 
-    #X_all = formattedData.drop(['tipster', 'result'], 1)
+    # X_all = formattedData.drop(['tipster', 'result'], 1)
 
     X_all = scaler.fit_transform(np.asarray(formattedData))
 
@@ -186,7 +186,8 @@ def prediction():
     prediction_a = tipster_bob_1.predict(formatted_data)
     prediction_b = tipster_bob_2.predict(formatted_data)
     print(prediction_a)
-    return jsonify(predictions={"prediction_a": prediction_a[0], "prediction_b": prediction_b[0]})
+    print(prediction_b)
+    return jsonify(prediction_a=prediction_a[0], prediction_b=prediction_b[0])
 
 
 app.run('0.0.0.0', debug=True, port=8100)
