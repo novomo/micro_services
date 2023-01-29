@@ -179,7 +179,7 @@ def formatData(row):
 
 @app.route('/prediction', methods=('POST',))
 def prediction():
-    content = request.json()
+    content = request.json
     print(content)
     formatted_data = formatData(content['row'])
     print(formatted_data)
