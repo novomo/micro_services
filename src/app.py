@@ -170,7 +170,7 @@ def formatData(row):
     # print(formattedData['tipsterId'])
     formattedData = formattedData.replace([np.inf, -np.inf, -0], 0)
 
-    X_all = formattedData.drop(['tipster', 'result'], 1)
+    #X_all = formattedData.drop(['tipster', 'result'], 1)
 
     X_all = scaler.fit_transform(np.asarray(X_all))
 
