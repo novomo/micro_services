@@ -187,7 +187,7 @@ def prediction():
     prediction_b = tipster_bob_2.predict(formatted_data)
     print(prediction_a)
     print(prediction_b)
-    return jsonify(prediction_a=int(prediction_a[0]), prediction_b=int(prediction_b[0]())
+    return jsonify(prediction_a=int(prediction_a[0]), prediction_b=int(prediction_b[0]))
 
 
 app.run('0.0.0.0', debug=True, port=8100)
