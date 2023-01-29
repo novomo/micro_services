@@ -172,7 +172,7 @@ def formatData(row):
 
     #X_all = formattedData.drop(['tipster', 'result'], 1)
 
-    X_all = scaler.fit_transform(np.asarray(X_all))
+    X_all = scaler.fit_transform(np.asarray(formattedData))
 
     return X_all
 
