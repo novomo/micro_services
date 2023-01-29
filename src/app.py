@@ -186,7 +186,7 @@ def prediction():
     prediction_a = tipster_bob_1.predict(formatted_data)
     prediction_b = tipster_bob_2.predict(formatted_data)
     print(prediction_a)
-    return jsonify({"predictions": {"prediction_a": prediction_a[0], "prediction_b": prediction_b[0]}})
+    return jsonify(predictions={"prediction_a": prediction_a[0], "prediction_b": prediction_b[0]})
 
 
 app.run('0.0.0.0', debug=True, port=8100)
